@@ -9,9 +9,13 @@ import javafx.stage.Stage;
 public class FXUI extends Application {
 
 	public static void main(String[] args) {
-		Backend.initDB();
-		Backend.createTable();
 		launch(args);
+	}
+
+	@Override
+	public void stop() {
+		System.err.println("shutting down");
+		// TODO setup this so that it closes the necessary connections
 	}
 
 	@Override

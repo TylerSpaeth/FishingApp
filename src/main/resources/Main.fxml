@@ -13,7 +13,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="880.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tylerspaeth.FXController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="932.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tylerspaeth.FXController">
    <children>
       <ListView fx:id="myListView" layoutX="35.0" layoutY="45.0" prefHeight="696.0" prefWidth="919.0" />
       <Button fx:id="deleteButton" layoutX="440.0" layoutY="761.0" mnemonicParsing="false" onMouseClicked="#deleteCurrent" prefHeight="25.0" prefWidth="110.0" text="Delete" />
@@ -39,7 +39,7 @@
       <Label layoutX="1091.0" layoutY="458.0" text="Date" />
       <Label layoutX="1090.0" layoutY="528.0" text="Time" />
       <Label layoutX="760.0" layoutY="765.0" text="Sort By: " />
-      <ChoiceBox fx:id="sortByChoiceBox" layoutX="804.0" layoutY="761.0" onMouseClicked="#changeSorting" prefWidth="150.0" />
+      <ChoiceBox fx:id="sortByChoiceBox" layoutX="804.0" layoutY="761.0" prefWidth="150.0" />
       <ButtonBar layoutX="121.0" layoutY="809.0" prefHeight="40.0" prefWidth="1059.0">
          <buttons>
             <ButtonBar prefHeight="40.0" prefWidth="200.0">
@@ -49,20 +49,20 @@
             </ButtonBar>
           <Button mnemonicParsing="false" onMouseClicked="#bestFly" prefHeight="25.0" prefWidth="243.0" text="Fly" />
             <Button mnemonicParsing="false" onMouseClicked="#bestWater" text="Water Conditions" />
-            <Button mnemonicParsing="false" onMouseClicked="#bestWeather" text="Weather Conditions" />
             <Button mnemonicParsing="false" onMouseClicked="#bestLocation" text="Water Location" />
             <Button mnemonicParsing="false" onAction="#bestTOD" text="Time of Day" />
+            <Button mnemonicParsing="false" onMouseClicked="#bestWeather" text="Weather Conditions" />
          </buttons>
       </ButtonBar>
       <Pane fx:id="popupPane" layoutX="340.0" layoutY="293.0" prefHeight="200.0" prefWidth="200.0">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d1deeb" height="415.0" layoutX="-172.0" layoutY="-107.0" stroke="BLACK" strokeType="INSIDE" width="545.0" />
-            <Label fx:id="bestTextLabel" alignment="CENTER" layoutX="-75.0" layoutY="18.0" prefHeight="165.0" prefWidth="351.0" textAlignment="CENTER" wrapText="true">
+            <Label fx:id="paneMainLabel" alignment="CENTER" layoutX="-75.0" layoutY="18.0" prefHeight="165.0" prefWidth="351.0" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label fx:id="bestItem" alignment="CENTER" layoutX="-9.0" layoutY="218.0" prefHeight="71.0" prefWidth="220.0" text="Label" textAlignment="CENTER" wrapText="true">
+            <Label fx:id="paneResultLabel" alignment="CENTER" layoutX="-9.0" layoutY="218.0" prefHeight="71.0" prefWidth="220.0" text="Label" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="14.0" />
                </font>
@@ -70,6 +70,9 @@
             <Button layoutX="308.0" layoutY="-94.0" mnemonicParsing="false" onMouseClicked="#disablePane" text="Close" />
          </children>
       </Pane>
+      <Label layoutX="311.0" layoutY="878.0" prefHeight="17.0" prefWidth="292.0" text="Give me fly reccomendations based on the weather in " />
+      <TextField fx:id="zipcodeField" layoutX="603.0" layoutY="874.0" promptText="Zipcode" />
+      <Button layoutX="756.0" layoutY="874.0" mnemonicParsing="false" onMouseClicked="#recommend" text="Go" />
    </children>
    <effect>
       <ColorAdjust />

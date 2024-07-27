@@ -3,8 +3,8 @@ com\tylerspaeth\FXController.class
 com\tylerspaeth\Catch$Weather.class
 com\tylerspaeth\FXUI.class
 com\tylerspaeth\Catch$Water.class
-com\tylerspaeth\App.class
+com\tylerspaeth\Catchlog$Filter.class
 com\tylerspaeth\Catch$Location.class
-com\tylerspaeth\Backend$Filter.class
-com\tylerspaeth\Backend.class
-com\tylerspaeth\TestUI.class
+com\tylerspaeth\Catchlog.class
+com\tylerspaeth\WeatherAPI.class
+com\tylerspaeth\DeletableCatchlog.class

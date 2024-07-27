@@ -8,16 +8,22 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
+//TODO update this
 /**
  * This class handles a variety of backend functionalities for the program including
  * database connection, sorting, and filtering. SQLite is utilized as the database.
  *
  * @author Tyler Spaeth
  */
-public class Backend {
+public class Catchlog {
 
-	private static final String databaseName = "test.db";
-	private static final String tableName = "CATCHLOG";
+	// FIXME
+	// Thinking that there should be a final boolean variable that determines if the table referenced by the
+	// backend can be deleted or not. Then the backend method should be able to construct
+	// a new backend with a subtable attached that is deletable. The main table should not be deletable.
+
+	private static final String databaseName = "test.db"; // TODO change this
+	protected final String tableName;
 
 	//TODO ensure this connection is closed upon shutdown of the program	
 	private static Connection c = null; // The connection to the database
@@ -48,9 +54,25 @@ public class Backend {
 	}
 
 	/**
+	 * This method is the constructor for a Catchlog object. It initiates a
+	 * connection to the backend if there is not already an existing one,
+	 * sets the tableName and creates a table for the tableName.
+	 *
+	 * @param tableName the name for the table the corresponds to this Catchlog
+	 */
+	public Catchlog(String tableName) {
+		// TODO make sure the tablename is valid
+		if(c == null) {
+			initDB();
+		}
+		this.tableName = tableName;
+		createTable();
+	}
+
+	/**
 	 * This method initializes the connection to the database.
 	 */
-	public static void initDB() {
+	private static void initDB() {
 		// TODO this needs to be understood better
 		try {
 			Class.forName("org.sqlite.JDBC");
@@ -65,7 +87,7 @@ public class Backend {
 	/**
 	 * This method creates a table in the database for the catches to be stored in.
 	 */
-	public static void createTable() {
+	private void createTable() {
 		try {
 			Statement state = c.createStatement();
 			String sql = "CREATE TABLE IF NOT EXISTS " + tableName + 
@@ -90,7 +112,7 @@ public class Backend {
 	 *
 	 * @param catch an object that represents all of the information that the user has given about the catch
 	 */
-	public static void insertToDB(String flyType, int flySize, Catch.Water waterConditions, Catch.Weather weatherConditions,
+	public void insertToDB(String flyType, int flySize, Catch.Water waterConditions, Catch.Weather weatherConditions,
 			Catch.Location location, Timestamp timeOfCatch) {
 		try {
 			String sql = "INSERT INTO " + tableName + "(flyType, flySize, water, weather, location, timeOfCatch) " +
@@ -112,14 +134,14 @@ public class Backend {
 	 *
 	 * @return a list of all catches that were in the database
 	 */
-	public static ArrayList<Catch> getAllCatches(Filter sortBy, boolean asc) {
+	public ArrayList<Catch> getAllCatches(Filter sortBy, boolean asc) {
 		ArrayList<Catch> toReturn = new ArrayList<Catch>();	
 		ResultSet result = null;
 		try {
 			Statement state = c.createStatement();
 			String sql = "";
 			if(sortBy != Filter.DEFAULT) {
-				sql += "SELECT rowid, * FROM " + tableName + " ORDER BY " + sortBy.getStr() + " ";
+				sql += "SELECT rowid, * FROM " + tableName + " ORDER BY " + sortBy.getStr() + " COLLATE NOCASE ";
 				if(asc) {
 					sql += "ASC;";
 				} 
@@ -165,7 +187,7 @@ public class Backend {
 	 *
 	 * @param row the rowid of the catch to be removed from the databse 
 	 */
-	public static void removeFromDB(long rowid) {
+	public void removeFromDB(long rowid) {
 		try {
 			Statement state = c.createStatement();
 			String sql = "DELETE FROM " + tableName + " WHERE rowid= " + rowid + ";"; 
@@ -187,7 +209,7 @@ public class Backend {
 	 * @param filter an enum value corresponding what most common category to search for
 	 * @return a string the represents the most common occurence of the given filter
 	 */
-	public static String getMostCommon(Filter filter) {
+	public String getMostCommon(Filter filter) {
 		String ret = "";
 		try {
 			Statement state = c.createStatement();
@@ -208,5 +230,46 @@ public class Backend {
 			System.exit(0);
 		}
 		return ret;
+	}
+	
+	/**
+	 * This method returns the appropriate connection object for use in
+	 * the DetachableCatchlog. Using this method any other way is not
+	 * reccomended.
+	 *
+	 * @return the connection to the sql database
+	 */
+	protected static Connection getConnection() {
+		return c;
+	}
+
+	// TODO add more methods like this for other Catch enums
+	/**
+	 * This method creates a DeletableCatchlog representing subsection
+	 * of this Catchlog based on a certain Weather Condition. Does so by
+	 * creating a subtable in the database
+	 *
+	 * @param weather the weather condition that all the 
+	 * catches in the new DeletableCatchlog should share.
+	 * @return a Deletable catchlog that corresponds to this subtable
+	 */
+	public DeletableCatchlog getSubtable(Catch.Weather weather) {
+		try {
+			Statement state = c.createStatement();
+			String sql = "CREATE TABLE " + tableName + "1 " + 
+									 "AS SELECT * FROM " + tableName + 
+									 " WHERE weather= \"" + weather + "\";";
+			state.executeUpdate(sql);
+			state.close();
+			// Create the return object passing the name of the table that was
+			// just created in the database;
+			DeletableCatchlog ret = new DeletableCatchlog(tableName+"1");	
+			return ret;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+		return null; // This will never be reached
 	}
 }

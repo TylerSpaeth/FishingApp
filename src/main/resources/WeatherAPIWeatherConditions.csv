@@ -1,0 +1,49 @@
+code,day,night,weatherCondition
+1000,Sunny,Clear,SUNNY
+1003,Partly cloudy,Partly cloudy,PARTLY_CLOUDY
+1006,Cloudy,Cloudy,CLOUDY
+1009,Overcast,Overcast,CLOUDY
+1030,Mist,Mist,LIGHT_RAIN
+1063,Patchy rain possible,Patchy rain possible,LIGHT_RAIN
+1066,Patchy snow possible,Patchy snow possible,LIGHT_SNOW
+1069,Patchy sleet possible,Patchy sleet possible,LIGHT_SNOW
+1072,Patchy freezing drizzle possible,Patchy freezing drizzle possible,LIGHT_SNOW
+1087,Thundery outbreaks possible,Thundery outbreaks possible,SEVERE_WEATHER
+1114,Blowing snow,Blowing snow,HEAVY_SNOW
+1117,Blizzard,Blizzard,HEAVY_SNOW
+1135,Fog,Fog,CLOUDY
+1147,Freezing fog,Freezing fog,CLOUDY
+1150,Patchy light drizzle,Patchy light drizzle,LIGHT_RAIN
+1153,Light drizzle,Light drizzle,LIGHT_RAIN
+1168,Freezing drizzle,Freezing drizzle,LIGHT_RAIN
+1171,Heavy freezing drizzle,Heavy freezing drizzle,RAIN
+1180,Patchy light rain,Patchy light rain,LIGHT_RAIN
+1183,Light rain,Light rain,LIGHT_RAIN
+1186,Moderate rain at times,Moderate rain at times,RAIN
+1189,Moderate rain,Moderate rain,RAIN
+1192,Heavy rain at times,Heavy rain at times,HEAVY_RAIN
+1195,Heavy rain,Heavy rain,HEAVY_RAIN
+1198,Light freezing rain,Light freezing rain,LIGHT_RAIN
+1201,Moderate or heavy freezing rain,Moderate or heavy freezing rain,RAIN
+1204,Light sleet,Light sleet,LIGHT_SNOW
+1207,Moderate or heavy sleet,Moderate or heavy sleet,RAIN
+1210,Patchy light snow,Patchy light snow,LIGHT_SNOW
+1213,Light snow,Light snow,LIGHT_SNOW
+1216,Patchy moderate snow,Patchy moderate snow,SNOW
+1219,Moderate snow,Moderate snow,SNOW
+1222,Patchy heavy snow,Patchy heavy snow,HEAVY_SNOW
+1225,Heavy snow,Heavy snow,HEAVY_SNOW
+1237,Ice pellets,Ice pellets,SNOW
+1240,Light rain shower,Light rain shower,LIGHT_RAIN
+1243,Moderate or heavy rain shower,Moderate or heavy rain shower,HEAVY_RAIN
+1246,Torrential rain shower,Torrential rain shower,HEAVY_RAIN
+1249,Light sleet showers,Light sleet showers,LIGHT_RAIN
+1252,Moderate or heavy sleet showers,Moderate or heavy sleet showers,RAIN
+1255,Light snow showers,Light snow showers,LIGHT_SNOW
+1258,Moderate or heavy snow showers,Moderate or heavy snow showers,HEAVY_SNOW
+1261,Light showers of ice pellets,Light showers of ice pellets,LIGHT_RAIN
+1264,Moderate or heavy showers of ice pellets,Moderate or heavy showers of ice pellets,SEVERE_WEATHER
+1273,Patchy light rain with thunder,Patchy light rain with thunder,SEVERE_WEATHER
+1276,Moderate or heavy rain with thunder,Moderate or heavy rain with thunder,SEVERE_WEATHER
+1279,Patchy light snow with thunder,Patchy light snow with thunder,SEVERE_WEATHER
+1282,Moderate or heavy snow with thunder,Moderate or heavy snow with thunder,SEVERE_WEATHER

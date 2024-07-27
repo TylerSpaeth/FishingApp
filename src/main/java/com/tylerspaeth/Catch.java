@@ -22,8 +22,15 @@ public class Catch {
 	};
 	public enum Weather {
 		SUNNY,
-		OVERCAST,
-		RAINY
+		PARTLY_CLOUDY,
+		CLOUDY,
+		LIGHT_RAIN,
+		RAIN,
+		HEAVY_RAIN,
+		LIGHT_SNOW,
+		SNOW,
+		HEAVY_SNOW,
+		SEVERE_WEATHER
 	};
 	private Water waterConditions;
 	private Weather weatherConditions;

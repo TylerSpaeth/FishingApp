@@ -18,9 +18,14 @@ import javafx.scene.Node;
 
 public class FXController implements Initializable {
 
+	private Catchlog catchlog;
+	private WeatherAPI weatherapi;
+
 	@FXML private ChoiceBox sortByChoiceBox;
 
 	@FXML private ListView<Catch> myListView;
+
+	@FXML private TextField zipcodeField;// TODO implement this
 
 	// Insertion form fields
 	@FXML private TextField flyTypeField;
@@ -32,15 +37,19 @@ public class FXController implements Initializable {
 	@FXML private ChoiceBox timeChoiceBox;
 
 	// Popup Pane fields
-	@FXML private Label bestItem;
-	@FXML private Label bestTextLabel;
+	@FXML private Label paneResultLabel;
+	@FXML private Label paneMainLabel;
 	@FXML private Pane popupPane;
 
-	private Backend.Filter currentSorting = Backend.Filter.DEFAULT;
+	// TODO streamline these
+	private Catchlog.Filter currentSorting = Catchlog.Filter.DEFAULT;
 	private boolean currentAsc = true;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
+
+		catchlog = new Catchlog("CATCHLOG");
+		weatherapi = new WeatherAPI();
 
 		// Disable the popup by default
 		disablePane(); 
@@ -68,16 +77,26 @@ public class FXController implements Initializable {
 		}
 		timeChoiceBox.getItems().addAll(times);
 
-		Backend.Filter[] filters = Backend.Filter.class.getEnumConstants();
+		Catchlog.Filter[] filters = Catchlog.Filter.class.getEnumConstants();
 		sortByChoiceBox.getItems().addAll(filters);
+		sortByChoiceBox.setValue(Catchlog.Filter.DEFAULT);
+		// TODO this may be inefficient, should verify this is correct
+		// observable, oldValue, and newValue are values that come from the addListener method
+		sortByChoiceBox.getSelectionModel().selectedItemProperty().addListener( (observable, oldValue, newValue) -> {
+			if(newValue != null && newValue != oldValue) {
+				myListView.getItems().clear();	
+				setList((Catchlog.Filter) newValue, currentAsc);
+				currentSorting = (Catchlog.Filter) newValue; // TODO streamline this
+			}
+		});
 	}
 
 	/**
 	 * This method adds the string representation of each Catch to the ListView
 	 * in the gui
 	 */
-	private void setList(Backend.Filter sortBy, boolean asc) {
-		ArrayList<Catch> cArr = Backend.getAllCatches(sortBy, asc);
+	private void setList(Catchlog.Filter sortBy, boolean asc) {
+		ArrayList<Catch> cArr = catchlog.getAllCatches(sortBy, asc);
 		myListView.getItems().addAll(cArr);
 	}
 
@@ -99,7 +118,7 @@ public class FXController implements Initializable {
 			if(tempDate == null) throw new NullPointerException(); // Check if a valid date has been given
 			int hourOfCatch = Integer.parseInt(String.valueOf(timeChoiceBox.getValue()).substring(0,2));
 			Timestamp dateOfCatch = new Timestamp(tempDate.getYear()-1900, tempDate.getMonthValue()-1, tempDate.getDayOfMonth(), hourOfCatch, 0, 0, 0);
-			Backend.insertToDB(flyType, flySize, waterConditions, weatherConditions, location, dateOfCatch);
+			catchlog.insertToDB(flyType, flySize, waterConditions, weatherConditions, location, dateOfCatch);
 			myListView.getItems().clear();	
 			setList(currentSorting, currentAsc);
 			resetInsertFields();
@@ -133,7 +152,7 @@ public class FXController implements Initializable {
 	@FXML
 	private void deleteCurrent() {
 		try {
-			Backend.removeFromDB(myListView.getSelectionModel().getSelectedItem().getRowId());
+			catchlog.removeFromDB(myListView.getSelectionModel().getSelectedItem().getRowId());
 			myListView.getItems().clear();
 			setList(currentSorting, currentAsc);
 		}
@@ -170,8 +189,8 @@ public class FXController implements Initializable {
 	 */
 	@FXML
 	private void bestFly() {
-		bestTextLabel.setText("Your Most Successful Fly Has Been: ");
-		bestItem.setText(Backend.getMostCommon(Backend.Filter.FLYTYPE));
+		paneMainLabel.setText("Your Most Successful Fly Has Been: ");
+		paneResultLabel.setText(catchlog.getMostCommon(Catchlog.Filter.FLYTYPE));
 		enablePane();
 	}
 
@@ -181,8 +200,8 @@ public class FXController implements Initializable {
 	 */
 	@FXML
 	private void bestWater() {
-		bestTextLabel.setText("Your Most Successful Water Condition Has Been: ");
-		bestItem.setText(Backend.getMostCommon(Backend.Filter.WATERCONDITIONS));
+		paneMainLabel.setText("Your Most Successful Water Condition Has Been: ");
+		paneResultLabel.setText(catchlog.getMostCommon(Catchlog.Filter.WATERCONDITIONS));
 		enablePane();
 	}
 
@@ -192,8 +211,8 @@ public class FXController implements Initializable {
 	 */
 	@FXML
 	private void bestWeather() {
-		bestTextLabel.setText("Your Most Successful Weather Condition Has Been: ");
-		bestItem.setText(Backend.getMostCommon(Backend.Filter.WEATHERCONDITIONS));
+		paneMainLabel.setText("Your Most Successful Weather Condition Has Been: ");
+		paneResultLabel.setText(catchlog.getMostCommon(Catchlog.Filter.WEATHERCONDITIONS));
 		enablePane();
 	}
 
@@ -203,8 +222,8 @@ public class FXController implements Initializable {
 	 */
 	@FXML
 	private void bestLocation() {
-		bestTextLabel.setText("Your Most Successful Water Location Has Been: ");
-		bestItem.setText(Backend.getMostCommon(Backend.Filter.LOCATION));
+		paneMainLabel.setText("Your Most Successful Water Location Has Been: ");
+		paneResultLabel.setText(catchlog.getMostCommon(Catchlog.Filter.LOCATION));
 		enablePane();
 	}
 
@@ -218,10 +237,10 @@ public class FXController implements Initializable {
 	 */
 	@FXML
 	private void bestTOD() {
-		bestTextLabel.setText("Your Most Successful Time of Day Has Been: ");
+		paneMainLabel.setText("Your Most Successful Time of Day Has Been: ");
 		
 		// Get all of the catches in the database
-		ArrayList<Catch> catches = Backend.getAllCatches(Backend.Filter.DEFAULT, true);	
+		ArrayList<Catch> catches = catchlog.getAllCatches(Catchlog.Filter.DEFAULT, true);	
 		
 		// This array will store the hours the each catch was caught at
 		float[] times = new float[catches.size()];
@@ -246,7 +265,7 @@ public class FXController implements Initializable {
 		int lowerBound = (int) (mean-sd);
 		int upperBound = (int) (mean+sd);
 
-		bestItem.setText(lowerBound + ":00 - " + upperBound + ":00");
+		paneResultLabel.setText(lowerBound + ":00 - " + upperBound + ":00");
 		enablePane();
 	}
 
@@ -275,16 +294,33 @@ public class FXController implements Initializable {
 
 		return sd;
 	}
-		
-	@FXML
-	private void changeSorting() {
-		//TODO account for asc/desc
-		Backend.Filter sortBy = (Backend.Filter) sortByChoiceBox.getValue();
-		if(sortBy != null && sortBy != currentSorting) {
-			myListView.getItems().clear();	
-			setList(sortBy, currentAsc);
-		}
-		
-	}
 
+	//TODO get it setup so that it can be for more than just the current day
+	/**
+	 * This method checks the for the user input of a zipcode and if a valid zipcode is given, 
+	 * a fly and a flysize to used based on the users previous catches and the weather
+	 * at the location on a given day.
+	 */
+	@FXML
+	private void recommend() {
+		int zipcode = Integer.parseInt(zipcodeField.getText());
+		Catch.Weather daysWeather = null;
+		try {
+			daysWeather = weatherapi.getWeather(zipcode, 0);
+		}
+		catch(IllegalArgumentException e) {
+			// IF the user does not enter valid info just do nothing
+			return;
+		}
+		DeletableCatchlog subtable = catchlog.getSubtable(daysWeather);
+		String flyTypeReccomendation = subtable.getMostCommon(Catchlog.Filter.FLYTYPE);
+		String flySizeReccomendation = subtable.getMostCommon(Catchlog.Filter.FLYSIZE);
+
+		paneMainLabel.setText("Because the weather is going to be " + daysWeather +
+													" try using:");
+		paneResultLabel.setText("Size " + flySizeReccomendation + " " + flyTypeReccomendation);
+		enablePane();
+		subtable.deleteCatchlog();
+	}
+		
 }
