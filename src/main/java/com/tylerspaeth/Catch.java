@@ -35,16 +35,12 @@ public class Catch {
 		}
 
 		public static Water strValueOf(String str) {
-			switch(str) {
-				case "Stained":
-					return STAINED;
-				case "Clear":
-					return CLEAR;
-				case "Muddy":
-					return MUDDY;
-				default:
-					return null;
+			for(Water water : Water.values()) {
+				if(str.equals(water.getStr())) {
+					return water;
+				}
 			}
+			return null;
 		}
 	};
 	public enum Weather {
@@ -74,30 +70,12 @@ public class Catch {
 		}
 
 		public static Weather strValueOf(String str) {
-			switch(str) {
-				case "Sunny":
-					return SUNNY;
-				case "Partly Cloudy":
-					return PARTLY_CLOUDY;
-				case "Cloudy":
-					return CLOUDY;
-				case "Light Rain":
-					return LIGHT_RAIN;
-				case "Rain":
-					return RAIN;
-				case "Heavy Rain":
-					return HEAVY_RAIN;
-				case "Light Snow":
-					return LIGHT_SNOW;
-				case "Snow":
-					return SNOW;
-				case "Heavy Snow":
-					return HEAVY_SNOW;
-				case "Severe Weather":
-					return SEVERE_WEATHER;
-				default:
-					return null;
+			for(Weather weather : Weather.values()) {
+				if(str.equals(weather.getStr())) {
+					return weather;
+				}
 			}
+			return null;
 		}
 	};
 	private Water waterConditions;
@@ -125,18 +103,12 @@ public class Catch {
 		}
 
 		public static Location strValueOf(String str) {
-			switch(str) {
-				case "Riffle":
-					return RIFFLE;
-				case "Pool":
-					return POOL;
-				case "Overhang":
-					return OVERHANG;
-				case "Other":
-					return OTHER;
-				default:
-					return null;
+			for(Location location : Location.values()) {
+				if(str.equals(location.getStr())) {
+					return location;
+				}
 			}
+			return null;
 		}
 	}
 	private Location location;
