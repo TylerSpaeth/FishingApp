@@ -60,13 +60,19 @@ public class FXController implements Initializable {
 		// Fill the ChoiceBoxes with the appropriate values
 
 		Catch.Water[] waters = Catch.Water.class.getEnumConstants();
-		waterConditionsChoiceBox.getItems().addAll(waters);
+		for(Catch.Water water : waters) {
+			waterConditionsChoiceBox.getItems().add(water.getStr());
+		}
 
 		Catch.Weather[] weathers = Catch.Weather.class.getEnumConstants();
-		weatherConditionsChoiceBox.getItems().addAll(weathers);
+		for(Catch.Weather weather : weathers) {
+			weatherConditionsChoiceBox.getItems().add(weather.getStr());
+		}
 
 		Catch.Location[] locations = Catch.Location.class.getEnumConstants();
-		locationChoiceBox.getItems().addAll(locations);
+		for(Catch.Location location : locations) {
+			locationChoiceBox.getItems().add(location.getStr());
+		}
 
 		String[] times = new String[24];
 		for(int i = 0; i < 24; i++) {
@@ -78,15 +84,18 @@ public class FXController implements Initializable {
 		timeChoiceBox.getItems().addAll(times);
 
 		Catchlog.Filter[] filters = Catchlog.Filter.class.getEnumConstants();
-		sortByChoiceBox.getItems().addAll(filters);
-		sortByChoiceBox.setValue(Catchlog.Filter.DEFAULT);
+		for(Catchlog.Filter filter : filters) {
+			sortByChoiceBox.getItems().add(filter.getStr());
+		}
+		//sortByChoiceBox.getItems().addAll(filters);
+		sortByChoiceBox.setValue(Catchlog.Filter.DEFAULT.getStr());
 		// TODO this may be inefficient, should verify this is correct
 		// observable, oldValue, and newValue are values that come from the addListener method
 		sortByChoiceBox.getSelectionModel().selectedItemProperty().addListener( (observable, oldValue, newValue) -> {
 			if(newValue != null && newValue != oldValue) {
 				myListView.getItems().clear();	
-				setList((Catchlog.Filter) newValue, currentAsc);
-				currentSorting = (Catchlog.Filter) newValue; // TODO streamline this
+				setList(Catchlog.Filter.strValueOf((String)newValue), currentAsc);
+				currentSorting = Catchlog.Filter.strValueOf((String)newValue); // TODO streamline this
 			}
 		});
 	}
@@ -111,9 +120,9 @@ public class FXController implements Initializable {
 		try {
 			String flyType = flyTypeField.getText();
 			int flySize = Integer.parseInt(flySizeField.getText());
-			Catch.Water waterConditions = (Catch.Water)(waterConditionsChoiceBox.getValue());
-			Catch.Weather weatherConditions = (Catch.Weather)(weatherConditionsChoiceBox.getValue());
-			Catch.Location location = (Catch.Location)(locationChoiceBox.getValue());
+			Catch.Water waterConditions = Catch.Water.strValueOf((String)waterConditionsChoiceBox.getValue());
+			Catch.Weather weatherConditions = Catch.Weather.strValueOf((String)weatherConditionsChoiceBox.getValue());
+			Catch.Location location = Catch.Location.strValueOf((String)locationChoiceBox.getValue());
 			LocalDate tempDate = date.getValue(); 
 			if(tempDate == null) throw new NullPointerException(); // Check if a valid date has been given
 			int hourOfCatch = Integer.parseInt(String.valueOf(timeChoiceBox.getValue()).substring(0,2));
@@ -316,7 +325,7 @@ public class FXController implements Initializable {
 		String flyTypeReccomendation = subtable.getMostCommon(Catchlog.Filter.FLYTYPE);
 		String flySizeReccomendation = subtable.getMostCommon(Catchlog.Filter.FLYSIZE);
 
-		paneMainLabel.setText("Because the weather is going to be " + daysWeather +
+		paneMainLabel.setText("Because the weather is going to be " + daysWeather.getStr() +
 													" try using:");
 		paneResultLabel.setText("Size " + flySizeReccomendation + " " + flyTypeReccomendation);
 		enablePane();

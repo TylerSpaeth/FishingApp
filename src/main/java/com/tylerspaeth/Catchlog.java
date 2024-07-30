@@ -31,25 +31,40 @@ public class Catchlog {
 	// TODO we should setup the db so that the naming is more consistent and 
 	// constructors are not needed
 	public enum Filter {
-		DEFAULT,
-		FLYTYPE("flyType"),
-		FLYSIZE("flySize"),
-		WATERCONDITIONS("water"),
-		WEATHERCONDITIONS("weather"),
-		LOCATION("location");
+		DEFAULT("default", "Default"),
+		FLYTYPE("flyType", "Fly Type"),
+		FLYSIZE("flySize", "Fly Size"),
+		WATERCONDITIONS("water", "Water Conditions"),
+		WEATHERCONDITIONS("weather", "Weather Conditions"),
+		LOCATION("location", "Location");
 
-		private String str;
+		private String str; // The string representation to display to user
+		private String dbStr; // The column name in the database
 		
 		public String getStr() {
 			return this.str;
+		}
+
+		public String getDbStr() {
+			return this.dbStr;
 		}
 
 		private Filter() {
 			this.str = null;
 		}
 
-		private Filter(String str) {
+		private Filter(String dbStr, String str) {
+			this.dbStr = dbStr;
 			this.str = str;
+		}
+
+		public static Filter strValueOf(String str) {
+			for(Filter filter : Filter.values()) {
+				if(str.equals(filter.getStr()) || str.equals(filter.getDbStr())) {
+					return filter;
+				}
+			}
+			return null;
 		}
 	}
 
@@ -141,7 +156,7 @@ public class Catchlog {
 			Statement state = c.createStatement();
 			String sql = "";
 			if(sortBy != Filter.DEFAULT) {
-				sql += "SELECT rowid, * FROM " + tableName + " ORDER BY " + sortBy.getStr() + " COLLATE NOCASE ";
+				sql += "SELECT rowid, * FROM " + tableName + " ORDER BY " + sortBy.getDbStr() + " COLLATE NOCASE ";
 				if(asc) {
 					sql += "ASC;";
 				} 
@@ -214,14 +229,14 @@ public class Catchlog {
 		try {
 			Statement state = c.createStatement();
 			ResultSet result;
-			String sql = "SELECT " + filter.getStr() + ", " +
-									 "COUNT(" + filter.getStr() + ") AS freq " +
+			String sql = "SELECT " + filter.getDbStr() + ", " +
+									 "COUNT(" + filter.getDbStr() + ") AS freq " +
 									 "FROM " + tableName + " " + 
-									 "GROUP BY " + filter.getStr() + " " +
+									 "GROUP BY " + filter.getDbStr() + " " +
 									 "ORDER BY freq DESC;";
 			result = state.executeQuery(sql);
 			result.next();
-			ret = result.getString(filter.getStr());
+			ret = result.getString(filter.getDbStr());
 			state.close();
 			result.close();
 		}
@@ -229,7 +244,17 @@ public class Catchlog {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.exit(0);
 		}
-		return ret;
+		switch(filter) {
+			case WATERCONDITIONS: 
+				return Catch.Water.valueOf(ret).getStr();
+			case WEATHERCONDITIONS:
+				return Catch.Weather.valueOf(ret).getStr();
+			case LOCATION:
+				return Catch.Location.valueOf(ret).getStr();
+			default:
+				return ret;
+		}
+		//return ret;
 	}
 	
 	/**

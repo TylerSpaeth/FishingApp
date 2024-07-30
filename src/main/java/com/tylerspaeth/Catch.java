@@ -16,31 +16,128 @@ public class Catch {
 	
 	// Conditions
 	public enum Water {
-		STAINED,
-		CLEAR,
-		MUDDY
+		STAINED("Stained"),
+		CLEAR("Clear"),
+		MUDDY("Muddy");
+
+		private String str;
+
+		public String getStr() {
+			return this.str;
+		}
+
+		private Water() {
+			this.str = null;
+		}
+
+		private Water(String str) {
+			this.str = str;
+		}
+
+		public static Water strValueOf(String str) {
+			switch(str) {
+				case "Stained":
+					return STAINED;
+				case "Clear":
+					return CLEAR;
+				case "Muddy":
+					return MUDDY;
+				default:
+					return null;
+			}
+		}
 	};
 	public enum Weather {
-		SUNNY,
-		PARTLY_CLOUDY,
-		CLOUDY,
-		LIGHT_RAIN,
-		RAIN,
-		HEAVY_RAIN,
-		LIGHT_SNOW,
-		SNOW,
-		HEAVY_SNOW,
-		SEVERE_WEATHER
+		SUNNY("Sunny"),
+		PARTLY_CLOUDY("Partly Cloudy"),
+		CLOUDY("Cloudy"),
+		LIGHT_RAIN("Light Rain"),
+		RAIN("Rain"),
+		HEAVY_RAIN("Heavy Rain"),
+		LIGHT_SNOW("Light Snow"),
+		SNOW("Snow"),
+		HEAVY_SNOW("Heavy Snow"),
+		SEVERE_WEATHER("Severe Weather");
+
+		private String str;
+
+		public String getStr() {
+			return this.str;
+		}
+		
+		private Weather() {
+			 this.str = null;
+		}
+
+		private Weather(String str) {
+			this.str = str;
+		}
+
+		public static Weather strValueOf(String str) {
+			switch(str) {
+				case "Sunny":
+					return SUNNY;
+				case "Partly Cloudy":
+					return PARTLY_CLOUDY;
+				case "Cloudy":
+					return CLOUDY;
+				case "Light Rain":
+					return LIGHT_RAIN;
+				case "Rain":
+					return RAIN;
+				case "Heavy Rain":
+					return HEAVY_RAIN;
+				case "Light Snow":
+					return LIGHT_SNOW;
+				case "Snow":
+					return SNOW;
+				case "Heavy Snow":
+					return HEAVY_SNOW;
+				case "Severe Weather":
+					return SEVERE_WEATHER;
+				default:
+					return null;
+			}
+		}
 	};
 	private Water waterConditions;
 	private Weather weatherConditions;
 
 	// Water Location
 	enum Location {
-		RIFFLE,
-		POOL,
-		OVERHANG,
-		OTHER
+		RIFFLE("Riffle"),
+		POOL("Pool"),
+		OVERHANG("Overhang"),
+		OTHER("Other");
+		
+		private String str;
+
+		public String getStr() {
+			return this.str;
+		}
+		
+		private Location() {
+			this.str = null;
+		}
+
+		private Location(String str) {
+			this.str = str;
+		}
+
+		public static Location strValueOf(String str) {
+			switch(str) {
+				case "Riffle":
+					return RIFFLE;
+				case "Pool":
+					return POOL;
+				case "Overhang":
+					return OVERHANG;
+				case "Other":
+					return OTHER;
+				default:
+					return null;
+			}
+		}
 	}
 	private Location location;
 
@@ -98,9 +195,9 @@ public class Catch {
 	@Override
 	public String toString() {
 		return "Size "+ this.flySize + " " + this.flyType +
-					 " - Water Conditions: " + this.waterConditions +
-					 " - Weather Conditions: " + this.weatherConditions +
-					 " - Water Location: " + this.location + 
+					 " - Water Conditions: " + this.waterConditions.getStr() +
+					 " - Weather Conditions: " + this.weatherConditions.getStr() +
+					 " - Water Location: " + this.location.getStr() + 
 					 " - Time of Catch: " + this.timeOfCatch;
 	}
 
