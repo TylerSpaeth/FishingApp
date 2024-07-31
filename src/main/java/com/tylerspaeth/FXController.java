@@ -99,49 +99,43 @@ public class FXController implements Initializable {
 		// TODO this may be inefficient, should verify this is correct
 		// observable, oldValue, and newValue are values that come from the addListener method
 		sortByChoiceBox.getSelectionModel().selectedItemProperty().addListener( (observable, oldValue, newValue) -> {
-			if(newValue != null && newValue != oldValue) {
-				myListView.getItems().clear();	
+			if(newValue == null || newValue == oldValue) {
+				return;
+			}
 
-				// DEFAULT does not need to be asceneding and descending, so we should not include that in this check
-				if(Catchlog.Filter.strValueOf((String) newValue) != Catchlog.Filter.DEFAULT) {
+			if(Catchlog.Filter.strValueOf((String) newValue) == Catchlog.Filter.DEFAULT) {
+				currentSorting = Catchlog.Filter.DEFAULT;
+			}
 
-					// Seperate all the words with spaces between
-					String[] seperated = ((String)newValue).split(" ");
-					
-					// The last string in the array will be the one that says if it is ascending or descending
-					String ascendingString = seperated[seperated.length - 1];
-					// Set the current ascending value to be this value that has been described
-					if(ascendingString.equals("Ascending")) {
-						currentAsc = true;
-					}
-					else {
-						currentAsc = false;
-					}
-
-					// Join the remaining Strings in the array together with spaces between
-					String filterString = "";
-					for(int i = 0; i < seperated.length - 1; i++) {
-						filterString += seperated[i];	
-						if(i < seperated.length-2) {
-							filterString += " ";
-						}
-					}	
-					// Get the Filter value from this joined string
-					Catchlog.Filter asFilter = Catchlog.Filter.strValueOf(filterString);
-					// Set the current sorting criteria
-					currentSorting = asFilter;
+			else {
+				// Seperate all the words with spaces between
+				String[] seperated = ((String)newValue).split(" ");
+				
+				// The last string in the array will be the one that says if it is ascending or descending
+				String ascendingString = seperated[seperated.length - 1];
+				// Set the current ascending value to be this value that has been described
+				if(ascendingString.equals("Ascending")) {
+					currentAsc = true;
 				}
 				else {
-					// This is being set to the corresponding Filter value for the String, which should
-					// always be DEFAULT, but if it somehow does not, then at least an error will show up.
-					currentSorting = Catchlog.Filter.strValueOf((String) newValue);
+					currentAsc = false;
 				}
-										
 
-				setList(currentSorting, currentAsc);
-				//setList(Catchlog.Filter.strValueOf((String)newValue), currentAsc);
-				//currentSorting = Catchlog.Filter.strValueOf((String)newValue); // TODO streamline this
+				// Join the remaining Strings in the array together with spaces between
+				String filterString = "";
+				for(int i = 0; i < seperated.length - 1; i++) {
+					filterString += seperated[i];	
+					if(i < seperated.length-2) {
+						filterString += " ";
+					}
+				}	
+				// Get the Filter value from this joined string
+				Catchlog.Filter asFilter = Catchlog.Filter.strValueOf(filterString);
+				// Set the current sorting criteria
+				currentSorting = asFilter;
 			}
+			myListView.getItems().clear();
+			setList(currentSorting, currentAsc);
 		});
 	}
 

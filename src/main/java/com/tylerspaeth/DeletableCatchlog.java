@@ -1,14 +1,17 @@
 package com.tylerspaeth;
 
 import java.sql.Statement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 
+//TODO may want to unitlize built-in temporary tables for this class
 /**
  *
  */
 public class DeletableCatchlog extends Catchlog {
 
-	// TODO not sure if this is correct
-	public DeletableCatchlog(String tableName) {
+	//TODO header
+	protected DeletableCatchlog(String tableName) throws IllegalArgumentException {
 		super(tableName);
 	}
 

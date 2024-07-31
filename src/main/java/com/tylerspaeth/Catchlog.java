@@ -8,19 +8,14 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
-//TODO update this
 /**
- * This class handles a variety of backend functionalities for the program including
- * database connection, sorting, and filtering. SQLite is utilized as the database.
+ * This class provides the functionality of a Catchlog object that connects to a SQLite database. 
+ * Funcionalities include but are not limited to: creating, reading, and deleting from tables 
+ * as well as creating the tables and and database iteslf.
  *
  * @author Tyler Spaeth
  */
 public class Catchlog {
-
-	// FIXME
-	// Thinking that there should be a final boolean variable that determines if the table referenced by the
-	// backend can be deleted or not. Then the backend method should be able to construct
-	// a new backend with a subtable attached that is deletable. The main table should not be deletable.
 
 	private static final String databaseName = "test.db"; // TODO change this
 	protected final String tableName;
@@ -71,15 +66,24 @@ public class Catchlog {
 	/**
 	 * This method is the constructor for a Catchlog object. It initiates a
 	 * connection to the backend if there is not already an existing one,
-	 * sets the tableName and creates a table for the tableName.
+	 * sets the tableName and creates a table for the tableName. It is assumed 
+	 * that the tableName used for this constructor will be for a permenant table and therefore
+	 * if a tableName is given that already exists, it will not cause any exceptions.
 	 *
 	 * @param tableName the name for the table the corresponds to this Catchlog
 	 */
-	public Catchlog(String tableName) {
-		// TODO make sure the tablename is valid
+	public Catchlog(String tableName) throws IllegalArgumentException {
+
+		// If a connection to the database has not been initialized already, do so
 		if(c == null) {
 			initDB();
 		}
+
+		// Check to see if the tableName is null
+		if(tableName == null) {
+			throw new IllegalArgumentException("tableName must not be null.");
+		}
+
 		this.tableName = tableName;
 		createTable();
 	}
