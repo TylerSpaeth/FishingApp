@@ -14,6 +14,7 @@ import java.util.ArrayList;
  * as well as creating the tables and and database iteslf.
  *
  * @author Tyler Spaeth
+ * @see com.tylerspaeth.DeleteableCatchlog
  */
 public class Catchlog {
 
@@ -25,6 +26,10 @@ public class Catchlog {
 																			
 	// TODO we should setup the db so that the naming is more consistent and 
 	// constructors are not needed
+	
+	/**	
+	 * This enum represents different ways that the Catchlog can be filtered.
+	 */
 	public enum Filter {
 		DEFAULT("default", "Default"),
 		FLYTYPE("flyType", "Fly Type"),
@@ -36,23 +41,54 @@ public class Catchlog {
 		private String str; // The string representation to display to user
 		private String dbStr; // The column name in the database
 		
+		/**
+		 * This returns the appropriately capitalized and spaced representation 
+		 * of the enum.
+		 *
+		 * @return a properly capitalized and spaced string representation
+		 */
 		public String getStr() {
 			return this.str;
 		}
 
+		/**
+		 * This returns the string that corresponds to the columns in the database tables.
+		 *
+		 * @return the string corresponding to a column in the database table
+		 */
 		public String getDbStr() {
 			return this.dbStr;
 		}
 
+		/**
+		 * This constructor sets both the formatted and database strings to null if 
+		 *  no strings are given.
+		 */
 		private Filter() {
 			this.str = null;
+			this.dbStr = null;
 		}
 
+		/**
+		 * This construtor sets the formatted and database string to the values that are
+		 * passed.
+		 *
+		 * @param dbStr the string the corresponds to a database column
+		 * @param str the string that is formatted for display to user
+		 */
 		private Filter(String dbStr, String str) {
 			this.dbStr = dbStr;
 			this.str = str;
 		}
 
+		/**
+		 * This method converts a given string value into a Filter value.
+		 *
+		 * @param str the string that is to be converted into a Filter value.
+		 * @return a corresponding Filter value if the given string is the formatted 
+		 * or database string for a Filter constant. If the string does not match to any 
+		 * Filter, then null will be returned.
+		 */
 		public static Filter strValueOf(String str) {
 			for(Filter filter : Filter.values()) {
 				if(str.equals(filter.getStr()) || str.equals(filter.getDbStr())) {
@@ -66,11 +102,10 @@ public class Catchlog {
 	/**
 	 * This method is the constructor for a Catchlog object. It initiates a
 	 * connection to the backend if there is not already an existing one,
-	 * sets the tableName and creates a table for the tableName. It is assumed 
-	 * that the tableName used for this constructor will be for a permenant table and therefore
-	 * if a tableName is given that already exists, it will not cause any exceptions.
+	 * sets the tableName and creates a table for the tableName. 
 	 *
-	 * @param tableName the name for the table the corresponds to this Catchlog
+	 * @param tableName the name for the table that corresponds to this Catchlog
+	 * @throws IllegalArgumentException if the given tableName is null
 	 */
 	public Catchlog(String tableName) throws IllegalArgumentException {
 
@@ -95,7 +130,7 @@ public class Catchlog {
 		// TODO this needs to be understood better
 		try {
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:" + databaseName); //TODO rename db
+			c = DriverManager.getConnection("jdbc:sqlite:" + databaseName); 
 		}
 		catch(Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -258,7 +293,6 @@ public class Catchlog {
 			default:
 				return ret;
 		}
-		//return ret;
 	}
 	
 	/**
@@ -292,7 +326,7 @@ public class Catchlog {
 			state.close();
 			// Create the return object passing the name of the table that was
 			// just created in the database;
-			DeletableCatchlog ret = new DeletableCatchlog(tableName+"1");	
+			DeletableCatchlog ret = new DeletableCatchlog(tableName+"wat");	
 			return ret;
 		}
 		catch(Exception e) {
@@ -301,4 +335,5 @@ public class Catchlog {
 		}
 		return null; // This will never be reached
 	}
+
 }

@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 
 /**
  * This class stores all of the information about a catch that a user enters
+ *
  * @author Tyler Spaeth
  */
 public class Catch {
@@ -14,7 +15,9 @@ public class Catch {
 	private String flyType;
 	private int flySize;
 	
-	// Conditions
+	/**
+	 * This enum represents the different water conditions that a catch could occur in.
+	 */
 	public enum Water {
 		STAINED("Stained"),
 		CLEAR("Clear"),
@@ -22,18 +25,39 @@ public class Catch {
 
 		private String str;
 
+		/**
+		 * This method returns a properly formatted string representation of the enum.
+		 *
+		 * @return a formatted string representation of the enum.
+		 */
 		public String getStr() {
 			return this.str;
 		}
 
+		/**
+		 * This construtor sets the string representation of the enum to null
+		 */
 		private Water() {
 			this.str = null;
 		}
 
+		/**
+		 * This constructor sets the string represenation of the enum to the given string
+		 * 
+		 * @param str the string representation of the enum
+		 */
 		private Water(String str) {
 			this.str = str;
 		}
 
+		/**
+		 * This methods convers a string value into a Water value.
+		 *
+		 * @param str the string that is to be converted into a Water value.
+		 * @return a corresponding Water value if the given string is the same as 
+		 * the corresponding formatted string for a Water constant. If the string
+		 * does not match to any Water, then null will be returned.
+		 */
 		public static Water strValueOf(String str) {
 			for(Water water : Water.values()) {
 				if(str.equals(water.getStr())) {
@@ -43,6 +67,11 @@ public class Catch {
 			return null;
 		}
 	};
+	private Water waterConditions;
+	
+	/**
+	 * This enum represents the different weather conditions that a catch could occur in.
+	 */
 	public enum Weather {
 		SUNNY("Sunny"),
 		PARTLY_CLOUDY("Partly Cloudy"),
@@ -57,18 +86,39 @@ public class Catch {
 
 		private String str;
 
+		/**
+		 * This method returns a properly formatted string representation of the enum.
+		 *
+		 * @return a formatted string representation of the enum.
+		 */
 		public String getStr() {
 			return this.str;
 		}
 		
+		/**
+		 * This construtor sets the string representation of the enum to null
+		 */
 		private Weather() {
 			 this.str = null;
 		}
 
+		/**
+		 * This constructor sets the string represenation of the enum to the given string
+		 * 
+		 * @param str the string representation of the enum
+		 */
 		private Weather(String str) {
 			this.str = str;
 		}
 
+		/**
+		 * This methods convers a string value into a Weather value.
+		 *
+		 * @param str the string that is to be converted into a Weather value.
+		 * @return a corresponding Weather value if the given string is the same as 
+		 * the corresponding formatted string for a Weather constant. If the string
+		 * does not match to any Weather, then null will be returned.
+		 */
 		public static Weather strValueOf(String str) {
 			for(Weather weather : Weather.values()) {
 				if(str.equals(weather.getStr())) {
@@ -78,10 +128,11 @@ public class Catch {
 			return null;
 		}
 	};
-	private Water waterConditions;
 	private Weather weatherConditions;
 
-	// Water Location
+	/**
+	 * This enum represents the different water locations that a catch could occur in.
+	 */
 	enum Location {
 		RIFFLE("Riffle"),
 		POOL("Pool"),
@@ -90,18 +141,39 @@ public class Catch {
 		
 		private String str;
 
+		/**
+		 * This method returns a properly formatted string representation of the enum.
+		 *
+		 * @return a formatted string representation of the enum.
+		 */
 		public String getStr() {
 			return this.str;
 		}
 		
+		/**
+		 * This construtor sets the string representation of the enum to null
+		 */
 		private Location() {
 			this.str = null;
 		}
 
+		/**
+		 * This constructor sets the string represenation of the enum to the given string
+		 * 
+		 * @param str the string representation of the enum
+		 */
 		private Location(String str) {
 			this.str = str;
 		}
 
+		/**
+		 * This methods convers a string value into a Location value.
+		 *
+		 * @param str the string that is to be converted into a Location value.
+		 * @return a corresponding Location value if the given string is the same as 
+		 * the corresponding formatted string for a Location constant. If the string
+		 * does not match to any Location, then null will be returned.
+		 */
 		public static Location strValueOf(String str) {
 			for(Location location : Location.values()) {
 				if(str.equals(location.getStr())) {

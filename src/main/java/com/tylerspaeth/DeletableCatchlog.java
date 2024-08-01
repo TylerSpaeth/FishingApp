@@ -6,11 +6,24 @@ import java.util.ArrayList;
 
 //TODO may want to unitlize built-in temporary tables for this class
 /**
+ * This class provides the fuctionality of a DeleteableCatchlog object that
+ * connects to a SQLite database. Funcionalities are identical to a standard 
+ * {@link com.tylerspaeth.Catchlog Catchlog}, with the exception that the 
+ * corresponding table for this class can be deleted.
  *
+ * @author Tyler Spaeth
  */
 public class DeletableCatchlog extends Catchlog {
 
-	//TODO header
+	/**
+	 * This method is the constructor for a DeleteableCatchlog object. It behaves
+	 * identically to the constructor for a normal Catchlog object. It initates a
+	 * connection to the backend if there is not already an existing one, sets the
+	 * tableName and creates a table for the tableName.
+	 *
+	 * @param tableName the name for the table that corresponds to this Catchlog
+	 * @throws IllegalArgumentException if the given tableName is null 
+	 */
 	protected DeletableCatchlog(String tableName) throws IllegalArgumentException {
 		super(tableName);
 	}
