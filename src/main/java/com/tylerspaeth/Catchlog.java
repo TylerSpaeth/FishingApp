@@ -25,7 +25,6 @@ public class Catchlog {
 	 */
 	protected final String tableName;
 
-	//TODO ensure this connection is closed upon shutdown of the program	
 	private static Connection c = null; // The connection to the database
 																			
 	// TODO we should setup the db so that the naming is more consistent and 
@@ -94,6 +93,7 @@ public class Catchlog {
 		 * Filter, then null will be returned.
 		 */
 		public static Filter strValueOf(String str) {
+			if(str == null) return null;
 			for(Filter filter : Filter.values()) {
 				if(str.equals(filter.getStr()) || str.equals(filter.getDbStr())) {
 					return filter;

@@ -59,6 +59,7 @@ public class Catch {
 		 * does not match to any Water, then null will be returned.
 		 */
 		public static Water strValueOf(String str) {
+			if(str == null) return null;
 			for(Water water : Water.values()) {
 				if(str.equals(water.getStr())) {
 					return water;
@@ -120,6 +121,7 @@ public class Catch {
 		 * does not match to any Weather, then null will be returned.
 		 */
 		public static Weather strValueOf(String str) {
+			if(str == null) return null;
 			for(Weather weather : Weather.values()) {
 				if(str.equals(weather.getStr())) {
 					return weather;
@@ -175,6 +177,7 @@ public class Catch {
 		 * does not match to any Location, then null will be returned.
 		 */
 		public static Location strValueOf(String str) {
+			if(str == null) return null;
 			for(Location location : Location.values()) {
 				if(str.equals(location.getStr())) {
 					return location;

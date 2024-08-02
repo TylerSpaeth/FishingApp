@@ -1,7 +1,7 @@
 package com.tylerspaeth;
 
-import java.sql.Statement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 //TODO may want to unitlize built-in temporary tables for this class
