@@ -135,7 +135,7 @@ public class Catch {
 	/**
 	 * This enum represents the different water locations that a catch could occur in.
 	 */
-	enum Location {
+	public enum Location {
 		RIFFLE("Riffle"),
 		POOL("Pool"),
 		OVERHANG("Overhang"),
