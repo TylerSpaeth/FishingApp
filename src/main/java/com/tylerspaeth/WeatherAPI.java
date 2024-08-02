@@ -27,7 +27,8 @@ public class WeatherAPI {
 	//limited from my account on the weatherapi website. Reducing the amount
 	//of data transfer since we only need a small amount of data
 	
-	private String baseURL = "https://us-central1-personal-416521.cloudfunctions.net/fishing-app-func";
+	private static final String WeatherCSV = "src/main/resources/WeatherAPIWeatherConditions.csv";
+	private static final String baseURL = "https://us-central1-personal-416521.cloudfunctions.net/fishing-app-func";
 	// Maps the weatherapi weather condition codes to the appropriate Catch.Weather enum value	
 	private Hashtable<Integer, Catch.Weather> apiToEnum;
 
@@ -39,20 +40,33 @@ public class WeatherAPI {
 	 */
 	public WeatherAPI() {
 
-		this.apiToEnum = new Hashtable<Integer, Catch.Weather>();
-
-		Scanner scanner = null;
-		File file = null;
 		try {
-			file = new File("src/main/resources/WeatherAPIWeatherConditions.csv");
-			scanner = new Scanner(file);
+			this.apiToEnum = loadTableFromFile(
+					new File(WeatherCSV));
 		}
 		catch(FileNotFoundException e) {
-			System.out.println(file.getAbsolutePath());
 			e.printStackTrace();
-			System.exit(0);
-
+			System.exit(1);
 		}
+	}
+
+	/**
+	 * This method loads a Hashtable with the values described in a csv file. The two
+	 * values that the method looks for are the condition code, which is in the first column, 
+	 * and the corresponding weather condition which is in the fourth column. 
+	 *
+	 * @param file a csv file containing Weather information where the condition code is stored
+	 * in the first column and the corresponding weather condition is in the fourth column.
+	 * @return a hashtable with the condition codes as the keys and weather conditions as the values
+	 * @throws FileNotFoundException if the file is not found
+	 */
+	private Hashtable<Integer, Catch.Weather> loadTableFromFile(File file) throws FileNotFoundException {
+
+		Scanner scanner = null;
+		Hashtable<Integer, Catch.Weather> table = new Hashtable<Integer, Catch.Weather>();
+
+		scanner = new Scanner(file);
+
 		scanner.useDelimiter(",|\\n");// TODO not sure what delimiters to use
 																	
 		int code = 0; // The weather api condition code for the current line
@@ -68,14 +82,15 @@ public class WeatherAPI {
 			// If we are on the last element of the line
 			// and it is not the first line
 			else if(index % 4 == 3 && index > 3) { 
-				apiToEnum.put(code, Catch.Weather.valueOf(input.trim()));
+				table.put(code, Catch.Weather.valueOf(input.trim()));
 			}
 
 			index++;
 		}
 		
 		scanner.close();
-
+		
+		return table;
 	}
 
 	/**
@@ -95,8 +110,9 @@ public class WeatherAPI {
 		if(daysFromNow > 2 || daysFromNow < 0)
 			throw new IllegalArgumentException("daysFromNow must be in the range of 0-2");
 
-		// TODO this is not a perfect way to verify.
 		// Verify that the zipcode that was given was at least the right size
+		// **Note** This is not a perfect solution, should look into other options for verifying the zipcode
+		// in the future.
 		if(zipCode > 99999 || zipCode < 0)
 			throw new IllegalArgumentException("Invalid zipCode, must be a 5 digit number");
 
@@ -150,17 +166,6 @@ public class WeatherAPI {
 		}
 
 		return null;
-	}
-
-	/**
-	 * This method is purely for testing purposes. It gives the Catch.Weather enum value that corresponds to the 
-	 * given weather conditon code.
-	 *
-	 * @param code the weather condition code to search the table for
-	 * @return a Catch.Weather enum value from the hashtable that corresponds to the given code
-	 */
-	public Catch.Weather checkHashtableValue(int code) {
-		return apiToEnum.get(code);
 	}
 
 }

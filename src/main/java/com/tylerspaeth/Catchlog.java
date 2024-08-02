@@ -14,11 +14,15 @@ import java.util.ArrayList;
  * as well as creating the tables and and database iteslf.
  *
  * @author Tyler Spaeth
- * @see com.tylerspaeth.DeleteableCatchlog
+ * @see com.tylerspaeth.DeletableCatchlog
  */
 public class Catchlog {
 
 	private static final String databaseName = "test.db"; // TODO change this
+	
+	/**
+	 * The name of the table as it is sorted in the database
+	 */
 	protected final String tableName;
 
 	//TODO ensure this connection is closed upon shutdown of the program	
@@ -164,7 +168,12 @@ public class Catchlog {
 	/**
 	 * This method inserts a new catch into the database.
 	 *
-	 * @param catch an object that represents all of the information that the user has given about the catch
+	 * @param flyType the type of fly that was used for the catch
+	 * @param flySize the size of fly that was used for the catch
+	 * @param waterConditions what the conditons of the water were like when the catch occured
+	 * @param weatherConditions what the conditions of the weather were like when the catch occured 
+	 * @param location the location in a body of water where the catch occured
+	 * @param timeOfCatch the time that the catch occured
 	 */
 	public void insertToDB(String flyType, int flySize, Catch.Water waterConditions, Catch.Weather weatherConditions,
 			Catch.Location location, Timestamp timeOfCatch) {
@@ -172,7 +181,9 @@ public class Catchlog {
 			String sql = "INSERT INTO " + tableName + "(flyType, flySize, water, weather, location, timeOfCatch) " +
 									 "VALUES ('" + flyType + "', '" + flySize + "', '" + waterConditions + "', '"
 									 + weatherConditions + "', '" + location + "', ?);";
-			PreparedStatement state = c.prepareStatement(sql); // Prepared statement allows us to insert datatypes like a timestamp where ? is.
+			
+			// Prepared statement allows for intersion of datatypes like a timestamp where ? is.
+			PreparedStatement state = c.prepareStatement(sql);
 			state.setTimestamp(1, timeOfCatch);
 			state.executeUpdate();
 			state.close();
@@ -186,6 +197,8 @@ public class Catchlog {
 	/**
 	 * This method retreives all of the catches from the database and puts them into an ArrayList which is then returned.
 	 *
+	 * @param sortBy the order in which the catches should be sorted
+	 * @param asc whether or not the order should be ascending or descending
 	 * @return a list of all catches that were in the database
 	 */
 	public ArrayList<Catch> getAllCatches(Filter sortBy, boolean asc) {
@@ -239,7 +252,7 @@ public class Catchlog {
 	/**
 	 * This method removes a given catch from the database.
 	 *
-	 * @param row the rowid of the catch to be removed from the databse 
+	 * @param rowid the rowid of the catch to be removed from the databse 
 	 */
 	public void removeFromDB(long rowid) {
 		try {

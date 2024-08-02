@@ -6,19 +6,23 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-//TODO javadocs
+/**
+ * This is the entrypoint for this application.
+ *
+ * @author Tyler Spaeth
+ */
 public class FXUI extends Application {
 
+	/**
+	 * Launches the application
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
 
-	@Override
-	public void stop() {
-		System.err.println("shutting down");
-		// TODO setup this so that it closes the necessary connections
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void start(Stage stage) {
 		try {
@@ -32,7 +36,7 @@ public class FXUI extends Application {
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-			System.exit(0);
+			System.exit(1);
 		}
 	}
 }
