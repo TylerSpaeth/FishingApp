@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+//TODO javadocs
 public class FXUI extends Application {
 
 	public static void main(String[] args) {

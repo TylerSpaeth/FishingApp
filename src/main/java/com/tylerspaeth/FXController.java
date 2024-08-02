@@ -15,6 +15,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.Node;
+import org.javatuples.Pair;
 
 public class FXController implements Initializable {
 
@@ -353,8 +354,12 @@ public class FXController implements Initializable {
 	private void recommend() {
 		int zipcode = Integer.parseInt(zipcodeField.getText());
 		Catch.Weather daysWeather = null;
+		String city = "";
 		try {
-			daysWeather = weatherapi.getWeather(zipcode, 0);
+			Pair<Catch.Weather, String> p = weatherapi.getWeather(zipcode, 0);
+			daysWeather = p.getValue0();
+			city = p.getValue1();
+			//daysWeather = weatherapi.getWeather(zipcode, 0);
 		}
 		catch(IllegalArgumentException e) {
 			// IF the user does not enter valid info just do nothing
@@ -364,8 +369,8 @@ public class FXController implements Initializable {
 		String flyTypeReccomendation = subtable.getMostCommon(Catchlog.Filter.FLYTYPE);
 		String flySizeReccomendation = subtable.getMostCommon(Catchlog.Filter.FLYSIZE);
 
-		paneMainLabel.setText("Because the weather is going to be " + daysWeather.getStr() +
-													" try using:");
+		paneMainLabel.setText("Because the weather is going to be " + daysWeather.getStr()
+			       	+ " in " + city + " try using:");
 		paneResultLabel.setText("Size " + flySizeReccomendation + " " + flyTypeReccomendation);
 		enablePane();
 		subtable.deleteCatchlog();

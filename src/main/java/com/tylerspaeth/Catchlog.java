@@ -319,7 +319,7 @@ public class Catchlog {
 	public DeletableCatchlog getSubtable(Catch.Weather weather) {
 		try {
 			Statement state = c.createStatement();
-			String sql = "CREATE TABLE " + tableName + "1 " + 
+			String sql = "CREATE TABLE " + tableName + "wat " + 
 									 "AS SELECT * FROM " + tableName + 
 									 " WHERE weather= \"" + weather + "\";";
 			state.executeUpdate(sql);

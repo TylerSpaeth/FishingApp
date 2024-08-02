@@ -1,14 +1,18 @@
 package com.tylerspaeth;
 
+import java.lang.InterruptedException;
 import java.net.http.HttpRequest;
 import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Hashtable;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import org.javatuples.Pair;
 import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,16 +23,11 @@ import org.json.JSONException;
  */
 public class WeatherAPI {
 
-	//TODO right now the data that is being returned from the httprequest is being
+	//Right now the data that is being returned from the httprequest is being
 	//limited from my account on the weatherapi website. Reducing the amount
 	//of data transfer since we only need a small amount of data
 	
-	//TODO add a method to return the location where the zipcode is for so that 
-	//it can be added to the popup recomendation
-	
-
-	private final String APIKEY =	"786761e9541f479a9d8175515241606";	
-	private String baseURL = "http://api.weatherapi.com/v1";
+	private String baseURL = "https://us-central1-personal-416521.cloudfunctions.net/fishing-app-func";
 	// Maps the weatherapi weather condition codes to the appropriate Catch.Weather enum value	
 	private Hashtable<Integer, Catch.Weather> apiToEnum;
 
@@ -77,8 +76,6 @@ public class WeatherAPI {
 		
 		scanner.close();
 
-		// Prints out the code to enum combinations
-		//System.out.println(apiToEnum); 
 	}
 
 	/**
@@ -89,10 +86,10 @@ public class WeatherAPI {
 	 * @param zipCode the 5 digit zipcode.
 	 * @param daysFromNow the number of days from the current day that the weather should be 
 	 * checked. 0 means the current day.
-	 * @return a Backend.Weather enum corresponding to the expected weather conditions
+	 * @return a pair containing a Catch.Weather object corresponding to the weather in the
+	 * location along with a String containing the name of the city. 
 	 */
-	public Catch.Weather getWeather(int zipCode, int daysFromNow) throws IllegalArgumentException {
-		//TODO change the way that we are returning in this method
+	public Pair<Catch.Weather, String> getWeather(int zipCode, int daysFromNow) throws IllegalArgumentException {
 
 		// Verify that a valid number of days was given
 		if(daysFromNow > 2 || daysFromNow < 0)
@@ -103,12 +100,10 @@ public class WeatherAPI {
 		if(zipCode > 99999 || zipCode < 0)
 			throw new IllegalArgumentException("Invalid zipCode, must be a 5 digit number");
 
-		// TODO do not use try-catch like this
 		try {
 			// By default this is a get request
-			// // TODO should switch this to using .headers instead of hardcoded
 			HttpRequest getRequest = HttpRequest.newBuilder()
-				.uri(new URI(baseURL + "/forecast.json?key=" + APIKEY + "&q=" + zipCode + "&days=3&aqi=no&alerts=no"))
+				.uri(new URI(baseURL + "?zipcode=" + zipCode))
 				.build();
 
 			HttpClient httpClient = HttpClient.newHttpClient();
@@ -116,6 +111,7 @@ public class WeatherAPI {
 			HttpResponse<String> getResponse = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
 
 			int code = 0;
+			String city = "";
 
 			try {
 				// Retrieve the condition corresponding to a Weather enum value in the apiToEnum HashTable
@@ -126,18 +122,31 @@ public class WeatherAPI {
 					.getJSONObject("day")
 					.getJSONObject("condition")
 					.getInt("code");
+				city = new JSONObject(getResponse.body())
+					.getJSONObject("location")
+					.getString("name");
+				
 			}
 			catch(JSONException e) {
 				// If there is a json exception, that it was because it was an invalid zipcode
 				throw new IllegalArgumentException("This is an invalid zipcode. It must be a 5 digit number corresponding to a U.S. zipcode");
 			}
-			
-			return apiToEnum.get(code);
+
+			Pair<Catch.Weather, String> p = new Pair<Catch.Weather, String>(apiToEnum.get(code), city);
+			return p;
 
 		}
-		catch(Exception e) {
+		catch(URISyntaxException e) {
 			e.printStackTrace();
-			System.exit(0);	
+			System.exit(1);	
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		catch(InterruptedException e) {
+			e.printStackTrace();
+			System.exit(1);
 		}
 
 		return null;
