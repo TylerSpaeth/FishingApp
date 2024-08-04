@@ -1,5 +1,7 @@
 package com.tylerspaeth;
 
+
+import java.sql.Timestamp;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,17 +12,17 @@ public class CatchTests {
 	
 	@Test
 	public void waterStrValueOfStained() {
-		assertTrue(Catch.Water.strValueOf("Stained") == Catch.Water.STAINED);
+		assertEquals(Catch.Water.strValueOf("Stained"), Catch.Water.STAINED);
 	}
 
 	@Test
 	public void waterStrValueOfClear() {
-		assertTrue(Catch.Water.strValueOf("Clear") == Catch.Water.CLEAR);
+		assertEquals(Catch.Water.strValueOf("Clear"), Catch.Water.CLEAR);
 	}
 
 	@Test
 	public void waterStrValueOfMuddy() {
-		assertTrue(Catch.Water.strValueOf("Muddy") == Catch.Water.MUDDY);
+		assertEquals(Catch.Water.strValueOf("Muddy"), Catch.Water.MUDDY);
 	}
 
 	@Test
@@ -44,52 +46,52 @@ public class CatchTests {
 	
 	@Test
 	public void weatherStrValueOfSunny() {
-		assertTrue(Catch.Weather.strValueOf("Sunny") == Catch.Weather.SUNNY);
+		assertEquals(Catch.Weather.strValueOf("Sunny"), Catch.Weather.SUNNY);
 	}
 
 	@Test
 	public void weatherStrValueOfPartlyCloudy() {
-		assertTrue(Catch.Weather.strValueOf("Partly Cloudy") == Catch.Weather.PARTLY_CLOUDY);
+		assertEquals(Catch.Weather.strValueOf("Partly Cloudy"), Catch.Weather.PARTLY_CLOUDY);
 	}
 
 	@Test
 	public void weatherStrValueOfCloudy() {
-		assertTrue(Catch.Weather.strValueOf("Cloudy") == Catch.Weather.CLOUDY);
+		assertEquals(Catch.Weather.strValueOf("Cloudy"), Catch.Weather.CLOUDY);
 	}
 
 	@Test
 	public void weatherStrValueOfLightRain() {
-		assertTrue(Catch.Weather.strValueOf("Light Rain") == Catch.Weather.LIGHT_RAIN);
+		assertEquals(Catch.Weather.strValueOf("Light Rain"), Catch.Weather.LIGHT_RAIN);
 	}
 
 	@Test
 	public void weatherStrValueOfRain() {
-		assertTrue(Catch.Weather.strValueOf("Rain") == Catch.Weather.RAIN);
+		assertEquals(Catch.Weather.strValueOf("Rain"), Catch.Weather.RAIN);
 	}
 
 	@Test
 	public void weatherStrValueOfHeavyRain() {
-		assertTrue(Catch.Weather.strValueOf("Heavy Rain") == Catch.Weather.HEAVY_RAIN);
+		assertEquals(Catch.Weather.strValueOf("Heavy Rain"), Catch.Weather.HEAVY_RAIN);
 	}
 
 	@Test
 	public void weatherStrValueOfLightSnow() {
-		assertTrue(Catch.Weather.strValueOf("Light Snow") == Catch.Weather.LIGHT_SNOW);
+		assertEquals(Catch.Weather.strValueOf("Light Snow"), Catch.Weather.LIGHT_SNOW);
 	}
 
 	@Test
 	public void weatherStrValueOfSnow() {
-		assertTrue(Catch.Weather.strValueOf("Snow") == Catch.Weather.SNOW);
+		assertEquals(Catch.Weather.strValueOf("Snow"), Catch.Weather.SNOW);
 	}
 
 	@Test
 	public void weatherStrValueOfHeavySnow() {
-		assertTrue(Catch.Weather.strValueOf("Heavy Snow") == Catch.Weather.HEAVY_SNOW);
+		assertEquals(Catch.Weather.strValueOf("Heavy Snow"), Catch.Weather.HEAVY_SNOW);
 	}
 
 	@Test
 	public void weatherStrValueOfSevereWeather() {
-		assertTrue(Catch.Weather.strValueOf("Severe Weather") == Catch.Weather.SEVERE_WEATHER);
+		assertEquals(Catch.Weather.strValueOf("Severe Weather"), Catch.Weather.SEVERE_WEATHER);
 	}
 		
 	@Test
@@ -113,22 +115,22 @@ public class CatchTests {
 
 	@Test
 	public void locationStrValueOfRiffle() {
-		assertTrue(Catch.Location.strValueOf("Riffle") == Catch.Location.RIFFLE);
+		assertEquals(Catch.Location.strValueOf("Riffle"), Catch.Location.RIFFLE);
 	}
 
 	@Test
 	public void locationStrValueOfPool() {
-		assertTrue(Catch.Location.strValueOf("Pool") == Catch.Location.POOL);
+		assertEquals(Catch.Location.strValueOf("Pool"), Catch.Location.POOL);
 	}
 
 	@Test
 	public void locationStrValueOfOverhang() {
-		assertTrue(Catch.Location.strValueOf("Overhang") == Catch.Location.OVERHANG);
+		assertEquals(Catch.Location.strValueOf("Overhang"), Catch.Location.OVERHANG);
 	}
 
 	@Test
 	public void locationStrValueOfOther() {
-		assertTrue(Catch.Location.strValueOf("Other") == Catch.Location.OTHER);
+		assertEquals(Catch.Location.strValueOf("Other"), Catch.Location.OTHER);
 	}
 
 	@Test
@@ -148,4 +150,96 @@ public class CatchTests {
 	
 	// End Location Tests
 	
+	// Begin Constructor and Getter Tests
+	
+	@Test
+	public void validCatchConstructor() {
+		assertAll(() -> { 
+			Catch c = new Catch(1, "Pink Squirrel", 4, Catch.Water.CLEAR, Catch.Weather.SUNNY,
+					Catch.Location.POOL, new Timestamp(12000));
+		});
+	}
+
+	@Test
+	public void validCatchConstructorGetters() {
+		Timestamp t = new Timestamp(12000);
+		Catch c = new Catch(1, "Pink Squirrel", 4, Catch.Water.CLEAR, Catch.Weather.SUNNY,
+					Catch.Location.POOL, t);
+		assertEquals(c.getRowId(), 1);
+		assertEquals(c.getFlyType(), ("Pink Squirrel"));
+		assertEquals(c.getFlySize(), 4);
+		assertEquals(c.getWaterConditions(), Catch.Water.CLEAR);
+		assertEquals(c.getWeatherConditions(), Catch.Weather.SUNNY);
+		assertEquals(c.getLocation(),Catch.Location.POOL);
+		assertEquals(c.getTimeOfCatch(), t);
+	}
+
+	@Test
+	public void invalidCatchConstructorNullFlyType() {
+		assertThrows(NullPointerException.class, () -> {
+				Catch c = new Catch(1, null, 4, Catch.Water.CLEAR, Catch.Weather.SUNNY,
+					Catch.Location.POOL, new Timestamp(1200));
+		});
+	}
+
+	@Test
+	public void invalidCatchConstructorEmptyFlyType() {
+		assertThrows(IllegalArgumentException.class, () -> {
+				Catch c = new Catch(1, "   ", 4, Catch.Water.CLEAR, Catch.Weather.SUNNY,
+					Catch.Location.POOL, new Timestamp(1200));
+		});
+	}
+
+	@Test
+	public void invalidCatchConstructorNegativeFlySize() {
+		assertThrows(IllegalArgumentException.class, () -> {
+				Catch c = new Catch(1, "Pink Squirrel", -4, Catch.Water.CLEAR, Catch.Weather.SUNNY,
+					Catch.Location.POOL, new Timestamp(1200));
+		});
+	}
+
+	@Test
+	public void invalidCatchConstructorNullWaterConditions() {
+		assertThrows(NullPointerException.class, () -> {
+				Catch c = new Catch(1, "Pink Squirrel", 4, null, Catch.Weather.SUNNY,
+					Catch.Location.POOL, new Timestamp(1200));
+		});
+	}
+		
+	@Test
+	public void invalidCatchConstructorNullWeatherConditions() {
+		assertThrows(NullPointerException.class, () -> {
+				Catch c = new Catch(1, "Pink Squirrel", 4, Catch.Water.CLEAR, null,
+					Catch.Location.POOL, new Timestamp(1200));
+		});
+	}
+	
+	@Test
+	public void invalidCatchConstructorNullLocation() {
+		assertThrows(NullPointerException.class, () -> {
+				Catch c = new Catch(1, "Pink Squirrel", 4, Catch.Water.CLEAR, Catch.Weather.SUNNY,
+					null, new Timestamp(1200));
+		});
+	}
+
+	@Test
+	public void invalidCatchConstructorNullTimeOfCatch() {
+		assertThrows(NullPointerException.class, () -> {
+				Catch c = new Catch(1, "Pink Squirrel", 4, Catch.Water.CLEAR, Catch.Weather.SUNNY,
+					Catch.Location.POOL, null);
+		});
+	}
+
+	@Test
+	public void testToString() {
+		Catch c = new Catch(1, "Pink Squirrel", 4, Catch.Water.CLEAR, Catch.Weather.SUNNY,
+					Catch.Location.POOL, new Timestamp(2024-1900, 2, 10, 0, 0, 0, 0));
+		String expectedString = "Size 4 Pink Squirrel - Water Conditions: Clear - "
+			+ "Weather Conditions: Sunny - Water Location: Pool - Time of Catch: "
+			+ "2024-03-10 00:00:00.0";
+		assertEquals(c.toString(), expectedString);
+	}
+
+	// End Constructor and Getter Tests
+
 }

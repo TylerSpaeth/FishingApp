@@ -191,28 +191,6 @@ public class Catch {
 	private Timestamp timeOfCatch; // Date and time of the catch
 
 	/**
-	 * This method constructs a Catch object without being given a timeOfCatch. In this case,
-	 * the date and time are set to null.
-	 *
-	 * @param rowid the rowid number in the database
-	 * @param flyType the type of fly that was used
-	 * @param flySize the size of fly that was used
-	 * @param waterConditions what the water conditions were when the fish was caught
-	 * @param weatherConditions what the weather conditions were when the fish was caught
-	 * @param location what type of water the fish was caught in
-	 */
-	public Catch(long rowid, String flyType, int flySize, Water waterConditions, Weather weatherConditions,
-			Location location) {
-		this.rowid = rowid;
-		this.flyType = flyType;
-		this.flySize = flySize;
-		this.waterConditions = waterConditions;
-		this.weatherConditions = weatherConditions;
-		this.location = location;
-		this.timeOfCatch = null;
-	}
-
-	/**
 	 * This method constructs a Catch object.
 	 *
 	 * @param rowid the rowid number in the database
@@ -222,9 +200,44 @@ public class Catch {
 	 * @param weatherConditions what the weather conditions were when the fish was caught
 	 * @param location what type of water the fish was caught in
 	 * @param timeOfCatch the date and time in which the fish was caught
+	 *
+	 * @throws IllegalArgumentException if an empty string is given for the flyType or
+	 * if the flySize is negative
+	 * @throws NullPointerException if flyType, waterConditions, weatherConditions, location
+	 * or timeOfCatch is null
 	 */
-	public Catch(long rowid, String flyType, int flySize, Water waterConditions, Weather weatherConditions,
-			Location location, Timestamp timeOfCatch) {
+	public Catch(long rowid, String flyType, int flySize, Water waterConditions, 
+			Weather weatherConditions, Location location, Timestamp timeOfCatch) 
+			throws IllegalArgumentException, NullPointerException {
+		
+		if(flyType == null) {
+			throw new NullPointerException("flyType can not be null");
+		}
+
+		if(flyType.trim().equals("")) {
+			throw new IllegalArgumentException("flyType must not be an empty string");
+		}
+
+		if(flySize < 0) {
+			throw new IllegalArgumentException("flySize must not be negative");
+		}
+		
+		if(waterConditions == null) {
+			throw new NullPointerException("waterConditions can not be null");
+		}
+
+		if(weatherConditions == null) {
+			throw new NullPointerException("weatherConditions can not be null");
+		}
+
+		if(location == null) {
+			throw new NullPointerException("location can not be null");
+		}
+
+		if(timeOfCatch == null) {
+			throw new NullPointerException("timeOfCatch can not be null");
+		}
+
 		this.rowid = rowid;
 		this.flyType = flyType;
 		this.flySize = flySize;
@@ -235,7 +248,13 @@ public class Catch {
 	}
 
 	/**
-	 * This method returns the string representation of a Catch object
+	 * This method returns the string representation of a Catch object.
+	 *
+	 * Size {flySize} {flyType} 
+	 * - Water Conditions: {waterConditions String}
+	 * - Weather Conditions: {weatherConditions String} 
+	 * - Water Location: {location String} 
+	 * - Time of Catch: {timeOfCatch}
 	 *
 	 * @return the string representation of a Catch object
 	 */
