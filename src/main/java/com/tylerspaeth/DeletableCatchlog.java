@@ -22,10 +22,12 @@ public class DeletableCatchlog extends Catchlog {
 	 * tableName and creates a table for the tableName.
 	 *
 	 * @param tableName the name for the table that corresponds to this Catchlog
-	 * @throws IllegalArgumentException if the given tableName is null 
+	 * @throws NullPointerException if the given tableName is null 
+	 * @throws IllegalArgumentExceeption if the tableName is blank
 	 */
-	protected DeletableCatchlog(String tableName) throws IllegalArgumentException {
-		super(tableName);
+	protected DeletableCatchlog(String tableName) throws NullPointerException, 
+					IllegalArgumentException {
+		super(tableName); 
 	}
 
 	/**

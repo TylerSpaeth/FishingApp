@@ -270,9 +270,14 @@ public class FXController implements Initializable {
 	 */
 	@FXML
 	private void bestFly() {
-		paneMainLabel.setText("Your Most Successful Fly Has Been: ");
-		paneResultLabel.setText(catchlog.getMostCommon(Catchlog.Filter.FLYTYPE));
-		enablePane();
+		try {
+			paneMainLabel.setText("Your Most Successful Fly Has Been: ");
+			paneResultLabel.setText(catchlog.getMostCommon(Catchlog.Filter.FLYTYPE));
+			enablePane();
+		}
+		catch(Exception e) {
+			// If this happens then there were no catches in the log
+		}
 	}
 
 	/**
@@ -281,9 +286,14 @@ public class FXController implements Initializable {
 	 */
 	@FXML
 	private void bestWater() {
-		paneMainLabel.setText("Your Most Successful Water Condition Has Been: ");
-		paneResultLabel.setText(catchlog.getMostCommon(Catchlog.Filter.WATERCONDITIONS));
-		enablePane();
+		try {
+			paneMainLabel.setText("Your Most Successful Water Condition Has Been: ");
+			paneResultLabel.setText(catchlog.getMostCommon(Catchlog.Filter.WATERCONDITIONS));
+			enablePane();
+		}
+		catch(Exception e) {
+			// If this happens then there were no catches in the log
+		}
 	}
 
 	/**
@@ -292,9 +302,14 @@ public class FXController implements Initializable {
 	 */
 	@FXML
 	private void bestWeather() {
-		paneMainLabel.setText("Your Most Successful Weather Condition Has Been: ");
-		paneResultLabel.setText(catchlog.getMostCommon(Catchlog.Filter.WEATHERCONDITIONS));
-		enablePane();
+		try {
+			paneMainLabel.setText("Your Most Successful Weather Condition Has Been: ");
+			paneResultLabel.setText(catchlog.getMostCommon(Catchlog.Filter.WEATHERCONDITIONS));
+			enablePane();
+		}
+		catch(Exception e) {
+			// If this happens then there were no catches in the log
+		}
 	}
 
 	/**
@@ -303,9 +318,14 @@ public class FXController implements Initializable {
 	 */
 	@FXML
 	private void bestLocation() {
-		paneMainLabel.setText("Your Most Successful Water Location Has Been: ");
-		paneResultLabel.setText(catchlog.getMostCommon(Catchlog.Filter.LOCATION));
-		enablePane();
+		try {
+			paneMainLabel.setText("Your Most Successful Water Location Has Been: ");
+			paneResultLabel.setText(catchlog.getMostCommon(Catchlog.Filter.LOCATION));
+			enablePane();
+		}
+		catch(Exception e) {
+			// If this happens then there were no catches in the log
+		}
 	}
 
 	/**
@@ -322,6 +342,10 @@ public class FXController implements Initializable {
 		
 		// Get all of the catches in the database
 		ArrayList<Catch> catches = catchlog.getAllCatches(Catchlog.Filter.DEFAULT, true);	
+
+		// If there are no catches in the log then nothing should be displayed
+		if(catches.size() == 0) return;
+		
 		
 		// This array will store the hours the each catch was caught at
 		float[] times = new float[catches.size()];
