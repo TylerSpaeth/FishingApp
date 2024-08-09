@@ -1,6 +1,5 @@
 package com.tylerspaeth;
 
-
 import java.sql.Timestamp;
 import org.junit.jupiter.api.Test;
 

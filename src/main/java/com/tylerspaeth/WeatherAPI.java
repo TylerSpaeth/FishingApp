@@ -103,6 +103,8 @@ public class WeatherAPI {
 	 * checked. 0 means the current day.
 	 * @return a pair containing a Catch.Weather object corresponding to the weather in the
 	 * location along with a String containing the name of the city. 
+	 * @throws IllegalArgumentException if the daysFromNow is negative or greater than 2. Also if the zipcode is
+	 * invalid.
 	 */
 	public Pair<Catch.Weather, String> getWeather(int zipCode, int daysFromNow) throws IllegalArgumentException {
 

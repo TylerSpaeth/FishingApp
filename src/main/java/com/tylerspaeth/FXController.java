@@ -405,12 +405,13 @@ public class FXController implements Initializable {
 	 * a fly and a flysize to used based on the users previous catches and the weather
 	 * at the location on a given day.
 	 *
-	 * Note that this currently only make reccomendations for the current day. In the 
-	 * future, the functionality should be expanded to allow users to get reccomendations
+	 * Note that this currently only make recommendations for the current day. In the 
+	 * future, the functionality should be expanded to allow users to get recommendations
 	 * for days in the future where the forecast is available.
 	 */
 	@FXML
 	private void recommend() {
+		
 		int zipcode = Integer.parseInt(zipcodeField.getText());
 
 		// Call the weather api to get the weather condion and the city that the
