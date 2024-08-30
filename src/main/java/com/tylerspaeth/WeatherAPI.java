@@ -67,7 +67,7 @@ public class WeatherAPI {
 
 		scanner = new Scanner(file);
 
-		scanner.useDelimiter(",|\\n");// TODO not sure what delimiters to use
+		scanner.useDelimiter(",|\\n");
 																	
 		int code = 0; // The weather api condition code for the current line
 		int index = 0; // The index for number of items read from file

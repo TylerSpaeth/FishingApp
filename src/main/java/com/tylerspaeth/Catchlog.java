@@ -19,7 +19,7 @@ import java.util.ArrayList;
  */
 public class Catchlog {
 
-	private static final String databaseName = "test.db"; // TODO change this
+	private static final String databaseName = "catchlog.db"; 
 	
 	/**
 	 * The name of the table as it is sorted in the database
@@ -28,8 +28,7 @@ public class Catchlog {
 
 	private static Connection c = null; // The connection to the database
 																			
-	// TODO we should setup the db so that the naming is more consistent and 
-	// constructors are not needed
+	// TODO potentially change db naming so that the additional strings are not needed
 	
 	/**	
 	 * This enum represents different ways that the Catchlog can be filtered.
@@ -138,7 +137,6 @@ public class Catchlog {
 	 * This method initializes the connection to the database.
 	 */
 	private static void initDB() {
-		// TODO this needs to be understood better
 		try {
 			Class.forName("org.sqlite.JDBC");
 			c = DriverManager.getConnection("jdbc:sqlite:" + databaseName); 
