@@ -9,8 +9,7 @@ import java.net.URISyntaxException;
 import java.util.Hashtable;
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.io.IOException;
 import org.javatuples.Pair;
 import org.json.JSONObject;
@@ -27,7 +26,7 @@ public class WeatherAPI {
 	//limited from my account on the weatherapi website. Reducing the amount
 	//of data transfer since we only need a small amount of data
 	
-	private static final String WeatherCSV = "src/main/resources/WeatherAPIWeatherConditions.csv";
+	private static final String WeatherCSV = "WeatherAPIWeatherConditions.csv";
 	private static final String baseURL = "https://us-central1-personal-416521.cloudfunctions.net/fishing-app-func";
 	// Maps the weatherapi weather condition codes to the appropriate Catch.Weather enum value	
 	private Hashtable<Integer, Catch.Weather> apiToEnum;
@@ -41,10 +40,9 @@ public class WeatherAPI {
 	public WeatherAPI() {
 
 		try {
-			this.apiToEnum = loadTableFromFile(
-					new File(WeatherCSV));
+			this.apiToEnum = loadTableFromFile(this.getClass().getClassLoader().getResourceAsStream(WeatherCSV)); 
 		}
-		catch(FileNotFoundException e) {
+		catch(Exception e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
@@ -55,17 +53,16 @@ public class WeatherAPI {
 	 * values that the method looks for are the condition code, which is in the first column, 
 	 * and the corresponding weather condition which is in the fourth column. 
 	 *
-	 * @param file a csv file containing Weather information where the condition code is stored
+	 * @param stream an InputStream representing a csv file containing Weather information where the condition code is stored
 	 * in the first column and the corresponding weather condition is in the fourth column.
 	 * @return a hashtable with the condition codes as the keys and weather conditions as the values
-	 * @throws FileNotFoundException if the file is not found
 	 */
-	private Hashtable<Integer, Catch.Weather> loadTableFromFile(File file) throws FileNotFoundException {
+	private Hashtable<Integer, Catch.Weather> loadTableFromFile(InputStream stream) {
 
 		Scanner scanner = null;
 		Hashtable<Integer, Catch.Weather> table = new Hashtable<Integer, Catch.Weather>();
 
-		scanner = new Scanner(file);
+		scanner = new Scanner(stream);
 
 		scanner.useDelimiter(",|\\n");
 																	

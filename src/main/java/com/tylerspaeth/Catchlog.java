@@ -307,8 +307,9 @@ public class Catchlog {
 			throw new NullPointerException("filter can not be null");
 		}
 
+		// IF there are no catches in the table
 		if(this.getAllCatches(Filter.DEFAULT, true).size() == 0) {
-			throw new IllegalStateException("There must be at least one catch in the log");
+			return "N/A";
 		}
 
 		if(filter == Filter.DEFAULT) {

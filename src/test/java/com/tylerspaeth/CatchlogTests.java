@@ -805,9 +805,7 @@ public class CatchlogTests {
 	@Test
 	public void mostCommonEmptyLog() {
 		Catchlog cat = new Catchlog("test");
-		assertThrows(IllegalStateException.class, () -> {
-			cat.getMostCommon(Catchlog.Filter.FLYTYPE);
-		});
+		assertEquals(cat.getMostCommon(Catchlog.Filter.FLYTYPE), "N/A");
 		deleteTable(cat.getConnection(), "test");
 	}
 	

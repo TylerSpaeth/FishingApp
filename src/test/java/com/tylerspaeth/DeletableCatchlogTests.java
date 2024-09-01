@@ -769,9 +769,7 @@ public class DeletableCatchlogTests {
 	@Test
 	public void mostCommonEmptyLog() {
 		DeletableCatchlog cat = new DeletableCatchlog("test");
-		assertThrows(IllegalStateException.class, () -> {
-			cat.getMostCommon(Catchlog.Filter.FLYTYPE);
-		});
+		assertEquals(cat.getMostCommon(Catchlog.Filter.FLYTYPE), "N/A");
 		deleteTable(cat.getConnection(), "test");
 	}
 	
