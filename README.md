@@ -6,13 +6,13 @@ This desktop app provides fly fishermen with the ability to log their catches an
 
 This project is a desktop application designed for people who like to fly fish. The focus point of the application is the catchlog and insertion form that take up 
 the majority of the screen. This is how one can create and view information about their catches. A new catch is made up of a few components:  
-- the fly type;     
-- the fly size;  
-- the water conditions;   
-- the weather conditions;   
-- the location on the body of water;   
-- the date;   
-- the time (rounded to the nearest hour).
+- Fly type     
+- Fly size  
+- Water conditions   
+- Weather conditions   
+- Location on the body of water   
+- Date   
+- Time (rounded to the nearest hour).
     
 Below the log, there are a variety of buttons for users to choose from.
 - They can select an item from the catchlog and delete it with the delete button.
