@@ -54,7 +54,7 @@ java -jar fishingapp.jar
 - Alternatively, you can click on the jar file to open it.  
   
 If you downloaded the source code:
-- While any build tools can be used, Maven is reccomended as the project includes a pom.xml file.
+- While any build tools can be used, Maven is recommended as the project includes a pom.xml file.
 - If you choose to use Maven the following command can be used:
 ```
 // To build the program
