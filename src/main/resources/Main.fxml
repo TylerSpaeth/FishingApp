@@ -70,7 +70,7 @@
             <Button layoutX="308.0" layoutY="-94.0" mnemonicParsing="false" onMouseClicked="#disablePane" text="Close" />
          </children>
       </Pane>
-      <Label layoutX="311.0" layoutY="878.0" prefHeight="17.0" prefWidth="292.0" text="Give me fly reccomendations based on the weather in " />
+      <Label layoutX="311.0" layoutY="878.0" prefHeight="17.0" prefWidth="292.0" text="Give me fly recommendations based on the weather in " />
       <TextField fx:id="zipcodeField" layoutX="603.0" layoutY="874.0" promptText="Zipcode" />
       <Button layoutX="756.0" layoutY="874.0" mnemonicParsing="false" onMouseClicked="#recommend" text="Go" />
    </children>
